@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #0f2734;
+  font-family: "poppins", sans-serif;
+}
+
+.container {
+  max-width: 850px;
+  width: 100%;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  color: 000;
+  border-radius: 5px;
+  background-color: #ddd;
+  transition: all 0.6s ease-in;
+}
+
+.container_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.container .btn {
+  border: none;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  outline: none;
+  font-size: 0.9rem;
+  background-color: #cb3050;
+  border-radius: 4px;
+  color: #fff;
+  font-family: inherit;
+  /* transition: 0.1s ease-in-out; */
+}
+
+.container .btn:focus {
+  transform: scale(0.95);
+  outline: none;
+}
+
+.container h2 {
+  text-align: center;
+  font-size: 3rem;
+  margin: 1rem 0;
+}
+
+.hide_notes {
+  text-align: center;
+  font-size: 3rem;
+  background-color: #cb3050;
+  border-radius: 4px;
+  width: 25%;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.message {
+  text-align: center;
+  font-size: 1.3rem;
+  margin: 1rem 0;
+}
+
+.notes_data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 3rem 0 0 0;
+}
+
+.notes_data input {
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.9rem;
+  border: 1px solid #ddd;
+}
+
+.notes_data button {
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.content p {
+  text-align: right;
+  justify-content: space-evenly;
+  margin: 12px 0 0 0;
+  font-size: 1rem;
+}

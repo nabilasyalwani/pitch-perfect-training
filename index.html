@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="script.js"></script>
+    <title>Pitch Perfect Training</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="container_wrapper">
+        <button type="button" class="btn btn_again">Play Again</button>
+        <p>Between A0 to C8</p>
+      </div>
+      <h2>Guess the notes</h2>
+      <p class="hide_notes">?</p>
+      <p class="message">Start Guessing........</p>
+
+      <div class="notes_data">
+        <form>
+          <input
+            type="text"
+            placeholder="Enter Your Guessing Notes!"
+            class="input_notes" />
+          <button type="button" class="btn btn_check">Check Now!</button>
+        </form>
+        <div class="content">
+          <p>Correct: <span class="correct">0</span></p>
+          <p>Attempt: <span class="attempt">0</span></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
