@@ -1,1 +1,0 @@
-// Reset note for each octave
