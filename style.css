@@ -58,6 +58,7 @@ body {
 
 .hide_notes {
   text-align: center;
+  cursor: pointer;
   font-size: 3rem;
   background-color: #cb3050;
   border-radius: 4px;

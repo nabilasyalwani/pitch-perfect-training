@@ -10,6 +10,7 @@ const attemptEl = document.querySelector(".attempt");
 const correctEl = document.querySelector(".correct");
 
 // Note 88 keys piano
+// prettier-ignore
 const notes_titles = [
   "A0", "A#0", "B0", "A1", "A#1", "B1", "C1", "C#1", "D1", "D#1", "E1", "F1", 
   "F#1", "G1", "G#1", "A2", "A#2", "B2", "C2", "C#2", "D2", "D#2", "E2", "F2", 
@@ -21,6 +22,7 @@ const notes_titles = [
   "F#7", "G7", "G#7", "C8"
 ];
 
+// prettier-ignore
 const audios = [
   'audio/0-a.wav', 'audio/0-as.wav', 'audio/0-b.wav',
   'audio/1-a.wav', 'audio/1-as.wav', 'audio/1-b.wav', 'audio/1-c.wav', 'audio/1-cs.wav', 'audio/1-d.wav', 'audio/1-ds.wav', 'audio/1-e.wav', 'audio/1-f.wav', 'audio/1-fs.wav', 'audio/1-g.wav', 'audio/1-gs.wav',
@@ -36,26 +38,36 @@ const audios = [
 let rand = Math.floor(Math.random() * 88);
 let ac = 0;
 let attempt = 0;
-let alr_check = 0; 
+let alr_check = false;
+let curraudio = null;
+let first_att = true;
+let rand_easy;
 
 // if easy mode
-let rand_easy = Math.floor(Math.random() * 12) + 39;
+do {
+  rand_easy = Math.floor(Math.random() * 16) + 39;
+} while (rand_easy >= 51 && rand_easy <= 53);
 let secret_notes = notes_titles[rand_easy];
 let x = secret_notes.length;
 secret_notes = secret_notes.substring(0, x - 1);
-  
-const playAudio = (index) => {
-  const audio = new Audio(audios[index]);
-  audio.play();
-}
 
-btnChckEl.addEventListener('click', () => {
+const playAudio = (index) => {
+  if (curraudio) {
+    curraudio.pause();
+    curraudio.currentTime = 0;
+  }
+
+  curraudio = new Audio(audios[index]);
+  curraudio.play();
+};
+
+btnChckEl.addEventListener("click", () => {
   const guess = inputNotesEl.value.trim().toUpperCase();
 
   if (guess == secret_notes) {
-    if (alr_check == 0) {
+    if (!alr_check) {
       ac++;
-      alr_check = 1;
+      alr_check = true;
     }
     containerEl.style.backgroundColor = "#bdffbf";
     displayMessage("Congrats! Your answer is correct!");
@@ -68,18 +80,33 @@ btnChckEl.addEventListener('click', () => {
   hideNotesEl.style.width = "50%";
   hideNotesEl.style.transition = "all 0.5s ease-in";
   playAudio(rand_easy);
- 
+
   attemptEl.textContent = attempt;
   correctEl.textContent = ac;
+});
+
+hideNotesEl.addEventListener("click", () => {
+  if (first_att) {
+    attemptEl.textContent = ++attempt;
+    first_att = false;
+  }
+  playAudio(rand_easy);
 });
 
 const displayMessage = function (message) {
   msgEl.textContent = message;
 };
 
-btnPlayEl.addEventListener('click', () => {
+btnPlayEl.addEventListener("click", () => {
+  if (curraudio) {
+    curraudio.pause();
+    curraudio.currentTime = 0;
+  }
+
   rand = Math.floor(Math.random() * 88 + 1);
-  rand_easy = Math.floor(Math.random() * 12) + 39;
+  do {
+    rand_easy = Math.floor(Math.random() * 16) + 39;
+  } while (rand_easy >= 51 && rand_easy <= 53);
   secret_notes = notes_titles[rand_easy];
 
   // if easy mode
@@ -92,9 +119,8 @@ btnPlayEl.addEventListener('click', () => {
   hideNotesEl.style.transition = "all 0.5s ease-in";
   inputNotesEl.value = "";
   containerEl.style.backgroundColor = "#DDD";
-  attempt++;
   alr_check = 0;
-  attemptEl.textContent = attempt;
+  attemptEl.textContent = ++attempt;
   playAudio(rand_easy);
   console.log(rand_easy);
   console.log(notes_titles[rand_easy]);
