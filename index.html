@@ -4,33 +4,78 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
-    <script defer src="script.js"></script>
     <title>Pitch Perfect Training</title>
   </head>
   <body>
     <div class="container">
-      <div class="container_wrapper">
-        <button type="button" class="btn btn_again">Play Again</button>
-        <p>Between A0 to C8</p>
-      </div>
-      <h2>Guess the notes</h2>
-      <p class="hide_notes">?</p>
-      <p class="message">Start Guessing........</p>
-
-      <div class="notes_data">
-        <form>
-          <input
-            type="text"
-            placeholder="Enter Your Guessing Notes!"
-            class="input_notes"
-          />
-          <button type="button" class="btn btn_check">Check Now!</button>
-        </form>
+      <section class="menu menu_start">
+        <h3>Welcome to Pitch Perfect Training!</h3>
+        <p class="message">Wanna start the game?</p>
+        <button type="button" class="btn btn_start">YES</button>
+      </section>
+      <section class="menu menu_mode hidden">
+        <p class="message">Which game mode would you like to play?</p>
+        <button type="button" class="btn btn_mode" data-mode="multiple">
+          Multiple
+        </button>
+        <button type="button" class="btn btn_mode" data-mode="essay">
+          Essay
+        </button>
+      </section>
+      <section class="menu menu_diff hidden">
+        <p class="message">Which game mode would you like to play?</p>
+        <p class="ket hidden">(You don't need to guess the octave)</p>
+        <button type="button" class="btn btn_diff" data-diff="easy">
+          Easy
+        </button>
+        <button type="button" class="btn btn_diff" data-diff="hard">
+          Hard
+        </button>
+        <p class="ket hidden">(You have to guess the octave)</p>
+      </section>
+      <section class="gameSection multiple hidden">
+        <div class="container_wrapper">
+          <button type="button" class="btn btn_again">Play Again</button>
+          <p class="range">Between A0 to C8</p>
+        </div>
+        <h2>Guess the notes</h2>
+        <p class="hide_notes">?</p>
+        <p class="message">Start Guessing........</p>
+        <div class="notes_data answer">
+          <button type="button" class="btn option" data-note="A">A</button>
+          <button type="button" class="btn option" data-note="B">B</button>
+          <button type="button" class="btn option" data-note="C">C</button>
+          <button type="button" class="btn option" data-note="D">D</button>
+        </div>
         <div class="content">
           <p>Correct: <span class="correct">0</span></p>
           <p>Attempt: <span class="attempt">0</span></p>
         </div>
-      </div>
+      </section>
+      <section class="gameSection essay hidden">
+        <div class="container_wrapper">
+          <button type="button" class="btn btn_again">Play Again</button>
+          <p class="range">Between A0 to C8</p>
+        </div>
+        <h2>Guess the notes</h2>
+        <p class="hide_notes">?</p>
+        <p class="message">Start Guessing........</p>
+        <div class="notes_data">
+          <form>
+            <input
+              type="text"
+              placeholder="Enter Your Guessing Notes!"
+              class="input_notes"
+            />
+            <button type="button" class="btn btn_check">Check Now!</button>
+          </form>
+          <div class="content">
+            <p>Correct: <span class="correct">0</span></p>
+            <p>Attempt: <span class="attempt">0</span></p>
+          </div>
+        </div>
+      </section>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>

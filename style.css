@@ -42,7 +42,34 @@ body {
   border-radius: 4px;
   color: #fff;
   font-family: inherit;
-  /* transition: 0.1s ease-in-out; */
+  transition: 0.1s ease-in-out;
+}
+
+.menu,
+.menu_start,
+.menu_diff,
+.menu_mode {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.menu_diff .ket {
+  font-size: 12px;
+  color: #660b1d;
+}
+
+.btn_start,
+.btn_mode,
+.btn_diff {
+  width: 170px;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin: 1.2rem 0;
+  border-radius: 4px;
 }
 
 .container .btn:focus {
@@ -53,6 +80,12 @@ body {
 .container h2 {
   text-align: center;
   font-size: 3rem;
+  margin: 1rem 0;
+}
+
+.container h3 {
+  text-align: center;
+  font-size: 2rem;
   margin: 1rem 0;
 }
 
@@ -99,4 +132,21 @@ body {
   justify-content: space-evenly;
   margin: 12px 0 0 0;
   font-size: 1rem;
+}
+
+.multiple .notes_data {
+  display: flex;
+  margin: 1.5rem 0;
+  justify-content: center;
+  gap: 30px;
+}
+
+.multiple .content {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.hidden {
+  display: none;
 }

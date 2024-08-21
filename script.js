@@ -1,13 +1,24 @@
 "use strict";
 
 const containerEl = document.querySelector(".container");
-const btnPlayEl = document.querySelector(".btn_again");
+const menuStartEl = document.querySelector(".menu_start");
+const menuModeEl = document.querySelector(".menu_mode");
+const menuDiffEl = document.querySelector(".menu_diff");
+const btnStartEl = document.querySelector(".btn_start");
+const btnModeEl = document.querySelectorAll(".btn_mode");
+const btnDiffEl = document.querySelectorAll(".btn_diff");
+const multipleEl = document.querySelector(".multiple");
+const essayEl = document.querySelector(".essay");
+const btnPlayEl = document.querySelectorAll(".btn_again");
 const btnChckEl = document.querySelector(".btn_check");
-const hideNotesEl = document.querySelector(".hide_notes");
-const msgEl = document.querySelector(".message");
+const hideNotesEl = document.querySelectorAll(".hide_notes");
+const msgEl = document.querySelectorAll(".message");
 const inputNotesEl = document.querySelector(".input_notes");
-const attemptEl = document.querySelector(".attempt");
-const correctEl = document.querySelector(".correct");
+const attemptEl = document.querySelectorAll(".attempt");
+const correctEl = document.querySelectorAll(".correct");
+const btnOptionsEl = document.querySelectorAll(".option");
+const rangeEl = document.querySelectorAll(".range");
+const ketEl = document.querySelectorAll(".ket");
 
 // Note 88 keys piano
 // prettier-ignore
@@ -34,98 +45,204 @@ const audios = [
   'audio/7-a.wav', 'audio/7-as.wav', 'audio/7-b.wav', 'audio/7-c.wav', 'audio/7-cs.wav', 'audio/7-d.wav', 'audio/7-ds.wav', 'audio/7-e.wav', 'audio/7-f.wav', 'audio/7-fs.wav', 'audio/7-g.wav', 'audio/7-gs.wav', 'audio/8-c.wav'
 ];
 
-// generate random number from 1 to 88
-let rand = Math.floor(Math.random() * 88);
-let ac = 0;
-let attempt = 0;
-let alr_check = false;
-let curraudio = null;
-let first_att = true;
-let rand_easy;
+let [ac, attempt, alr_check, curraudio] = [0, 0, false, null];
+let randnum, num, secret_notes, choosen, uniq;
 
-// if easy mode
-do {
-  rand_easy = Math.floor(Math.random() * 16) + 39;
-} while (rand_easy >= 51 && rand_easy <= 53);
-let secret_notes = notes_titles[rand_easy];
-let x = secret_notes.length;
-secret_notes = secret_notes.substring(0, x - 1);
+function randNumber(diff) {
+  let noRand;
+  if (diff === "easy") {
+    const validNumbers = [39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 54];
+    rangeEl.forEach((ran) => (ran.textContent = "Between C4 to C5"));
+    return validNumbers[Math.floor(Math.random() * validNumbers.length)];
+  } else {
+    noRand = Math.floor(Math.random() * 88);
+  }
+  return noRand;
+}
 
-const playAudio = (index) => {
+function playGame(modes, diff) {
+  resetAudio();
+  randnum = randNumber(diff);
+
+  if (modes === "multiple") {
+    secret_notes = notes_titles[randnum].slice(0, -1);
+    const shuffle = Math.floor(Math.random() * 4);
+    const gambling = new Set([secret_notes]);
+    btnOptionsEl.forEach((btn, index) => {
+      if (index === shuffle) {
+        btn.textContent = secret_notes;
+      } else {
+        do {
+          uniq = notes_titles[Math.floor(Math.random() * 12) + 3].slice(0, -1);
+        } while (gambling.has(uniq));
+        gambling.add(uniq);
+        btn.textContent = uniq;
+      }
+      btn.style.backgroundColor = "#cb3050";
+    });
+  } else {
+    secret_notes = notes_titles[randnum];
+    if (diff === "easy") {
+      secret_notes = secret_notes.slice(0, -1);
+    }
+  }
+
+  hideNotesEl.forEach((note) => {
+    note.textContent = "?";
+    note.style.width = "25%";
+    note.style.transition = "all 0.5s ease-in";
+  });
+
+  containerEl.style.backgroundColor = "#DDD";
+  inputNotesEl.style.backgroundColor = "#ffffff";
+  inputNotesEl.value = "";
+  inputNotesEl.disabled = false;
+  alr_check = false;
+  ++attempt;
+
+  displayMessage("Start Guessing..........");
+  updateStats();
+  playAudio(randnum);
+}
+
+function resetAudio() {
   if (curraudio) {
     curraudio.pause();
     curraudio.currentTime = 0;
   }
+}
 
+function playAudio(index) {
+  resetAudio();
   curraudio = new Audio(audios[index]);
   curraudio.play();
-};
+  console.log(notes_titles[index]);
+}
+
+function checkAnswer(mode, diff) {
+  if (mode === "multiple") {
+    if (choosen === secret_notes) {
+      ac++;
+      containerEl.style.backgroundColor = "#bdffbf";
+      displayMessage("Congrats! Your answer is correct!");
+    } else {
+      containerEl.style.backgroundColor = "#ffcfcf";
+      displayMessage("Sorry, your answer is wrong! Try better!");
+    }
+    btnOptionsEl.forEach((btn) => {
+      if (btn.textContent === secret_notes) {
+        btn.style.backgroundColor = "#008022";
+      } else if (choosen === btn.textContent) {
+        btn.style.backgroundColor = "#d41717";
+      }
+    });
+  } else {
+    const guess = inputNotesEl.value.trim().toUpperCase();
+    if (!guess) {
+      inputNotesEl.style.backgroundColor = "#fddfdf";
+      return;
+    } else {
+      if (guess === secret_notes) {
+        if (!alr_check) {
+          ac++;
+          alr_check = true;
+        }
+        containerEl.style.backgroundColor = "#bdffbf";
+        displayMessage("Congrats! Your answer is correct!");
+      } else {
+        containerEl.style.backgroundColor = "#ffcfcf";
+        displayMessage("Sorry, your answer is wrong! Try better!");
+      }
+      inputNotesEl.disabled = true;
+    }
+  }
+
+  hideNotesEl.forEach((note) => {
+    note.textContent = notes_titles[randnum];
+    note.style.width = "50%";
+    note.style.transition = "all 0.5s ease-in";
+  });
+
+  playAudio(randnum);
+  updateStats();
+}
+
+function displayMessage(message) {
+  msgEl.forEach((msg) => (msg.textContent = message));
+}
+
+function updateStats() {
+  attemptEl.forEach((el) => (el.textContent = attempt));
+  correctEl.forEach((el) => (el.textContent = ac));
+}
+
+inputNotesEl.addEventListener("input", () => {
+  if (inputNotesEl.value.trim()) {
+    inputNotesEl.style.backgroundColor = "#ffffff";
+  }
+});
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    if (inputNotesEl.value.trim()) {
+      checkAnswer(modeGame, diffGame);
+    }
+  }
+});
+
+hideNotesEl.forEach((note) => {
+  note.addEventListener("click", () => {
+    playAudio(randnum);
+  });
+});
+
+// menu game
+btnStartEl.addEventListener("click", () => {
+  menuStartEl.style.display = "none";
+  menuModeEl.style.display = "flex";
+});
+
+let modeGame;
+btnModeEl.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    modeGame = btn.dataset.mode;
+    menuModeEl.style.display = "none";
+    menuDiffEl.style.display = "flex";
+    if (modeGame === "essay") {
+      ketEl.forEach((ket) => {
+        ket.style.display = "block";
+      });
+    }
+  });
+});
+
+let diffGame;
+btnDiffEl.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    diffGame = btn.dataset.diff;
+    menuDiffEl.style.display = "none";
+    document.querySelector(`.${modeGame}`).style.display = "block";
+    playGame(modeGame, diffGame);
+  });
+});
+
+btnPlayEl.forEach((play) => {
+  play.addEventListener("click", () => {
+    playGame(modeGame, diffGame);
+  });
+});
 
 btnChckEl.addEventListener("click", () => {
-  const guess = inputNotesEl.value.trim().toUpperCase();
+  checkAnswer(modeGame, diffGame);
+});
 
-  if (guess == secret_notes) {
+btnOptionsEl.forEach((opt) => {
+  opt.addEventListener("click", (e) => {
     if (!alr_check) {
-      ac++;
+      choosen = e.target.textContent;
+      checkAnswer(modeGame, diffGame);
       alr_check = true;
     }
-    containerEl.style.backgroundColor = "#bdffbf";
-    displayMessage("Congrats! Your answer is correct!");
-  } else {
-    containerEl.style.backgroundColor = "#ffcfcf";
-    displayMessage("Sorry, Your answer is wrong! Try better!");
-  }
-
-  hideNotesEl.textContent = notes_titles[rand_easy];
-  hideNotesEl.style.width = "50%";
-  hideNotesEl.style.transition = "all 0.5s ease-in";
-  playAudio(rand_easy);
-
-  attemptEl.textContent = attempt;
-  correctEl.textContent = ac;
+  });
 });
-
-hideNotesEl.addEventListener("click", () => {
-  if (first_att) {
-    attemptEl.textContent = ++attempt;
-    first_att = false;
-  }
-  playAudio(rand_easy);
-});
-
-const displayMessage = function (message) {
-  msgEl.textContent = message;
-};
-
-btnPlayEl.addEventListener("click", () => {
-  if (curraudio) {
-    curraudio.pause();
-    curraudio.currentTime = 0;
-  }
-
-  rand = Math.floor(Math.random() * 88 + 1);
-  do {
-    rand_easy = Math.floor(Math.random() * 16) + 39;
-  } while (rand_easy >= 51 && rand_easy <= 53);
-  secret_notes = notes_titles[rand_easy];
-
-  // if easy mode
-  x = secret_notes.length;
-  secret_notes = secret_notes.substring(0, x - 1);
-  console.log(secret_notes);
-
-  hideNotesEl.textContent = "?";
-  hideNotesEl.style.width = "25%";
-  hideNotesEl.style.transition = "all 0.5s ease-in";
-  inputNotesEl.value = "";
-  containerEl.style.backgroundColor = "#DDD";
-  alr_check = 0;
-  attemptEl.textContent = ++attempt;
-  playAudio(rand_easy);
-  console.log(rand_easy);
-  console.log(notes_titles[rand_easy]);
-  displayMessage("Start Guessing........");
-});
-
-// Initialize attempts and correct answers
-correctEl.textContent = ac;
