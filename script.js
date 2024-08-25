@@ -61,6 +61,7 @@ function randNumber(diff) {
     return validNumbers[Math.floor(Math.random() * validNumbers.length)];
   } else {
     noRand = Math.floor(Math.random() * 88);
+    rangeEl.forEach((ran) => (ran.textContent = "Between A0 to C8"));
   }
   return noRand;
 }
