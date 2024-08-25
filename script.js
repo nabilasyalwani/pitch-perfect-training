@@ -9,16 +9,18 @@ const btnModeEl = document.querySelectorAll(".btn_mode");
 const btnDiffEl = document.querySelectorAll(".btn_diff");
 const multipleEl = document.querySelector(".multiple");
 const essayEl = document.querySelector(".essay");
-const btnPlayEl = document.querySelectorAll(".btn_again");
+const btnBackEl = document.querySelectorAll(".btn_back");
 const btnChckEl = document.querySelector(".btn_check");
 const hideNotesEl = document.querySelectorAll(".hide_notes");
+const iconEl = document.querySelectorAll(".hide_notes i");
 const msgEl = document.querySelectorAll(".message");
 const inputNotesEl = document.querySelector(".input_notes");
 const attemptEl = document.querySelectorAll(".attempt");
 const correctEl = document.querySelectorAll(".correct");
-const btnOptionsEl = document.querySelectorAll(".option");
+const btnOptionsEl = document.querySelectorAll(".opsi");
 const rangeEl = document.querySelectorAll(".range");
 const ketEl = document.querySelectorAll(".ket");
+const playBtnEl = document.querySelectorAll(".fa-circle-play");
 
 // Note 88 keys piano
 // prettier-ignore
@@ -45,6 +47,9 @@ const audios = [
   'audio/7-a.wav', 'audio/7-as.wav', 'audio/7-b.wav', 'audio/7-c.wav', 'audio/7-cs.wav', 'audio/7-d.wav', 'audio/7-ds.wav', 'audio/7-e.wav', 'audio/7-f.wav', 'audio/7-fs.wav', 'audio/7-g.wav', 'audio/7-gs.wav', 'audio/8-c.wav'
 ];
 
+const whiteNotes = ["C", "D", "E", "F", "G", "A", "B"];
+const blackNotes = ["C#", "D#", "F#", "G#", "A#"];
+
 let [ac, attempt, alr_check, curraudio] = [0, 0, false, null];
 let randnum, num, secret_notes, choosen, uniq;
 
@@ -61,24 +66,18 @@ function randNumber(diff) {
 }
 
 function playGame(modes, diff) {
+  if (document.querySelector(`.${modeGame}`).style.display === "none") return;
   resetAudio();
   randnum = randNumber(diff);
 
   if (modes === "multiple") {
     secret_notes = notes_titles[randnum].slice(0, -1);
-    const shuffle = Math.floor(Math.random() * 4);
-    const gambling = new Set([secret_notes]);
-    btnOptionsEl.forEach((btn, index) => {
-      if (index === shuffle) {
-        btn.textContent = secret_notes;
-      } else {
-        do {
-          uniq = notes_titles[Math.floor(Math.random() * 12) + 3].slice(0, -1);
-        } while (gambling.has(uniq));
-        gambling.add(uniq);
-        btn.textContent = uniq;
+    btnOptionsEl.forEach((btn) => {
+      if (whiteNotes.includes(btn.dataset.note)) {
+        btn.style.backgroundColor = "#FFF";
+      } else if (blackNotes.includes(btn.dataset.note)) {
+        btn.style.backgroundColor = "#171717";
       }
-      btn.style.backgroundColor = "#cb3050";
     });
   } else {
     secret_notes = notes_titles[randnum];
@@ -88,7 +87,7 @@ function playGame(modes, diff) {
   }
 
   hideNotesEl.forEach((note) => {
-    note.textContent = "?";
+    note.innerHTML = '<i class="fa-solid fa-circle-play"></i>';
     note.style.width = "25%";
     note.style.transition = "all 0.5s ease-in";
   });
@@ -97,12 +96,14 @@ function playGame(modes, diff) {
   inputNotesEl.style.backgroundColor = "#ffffff";
   inputNotesEl.value = "";
   inputNotesEl.disabled = false;
+  btnChckEl.disabled = false;
   alr_check = false;
   ++attempt;
 
   displayMessage("Start Guessing..........");
   updateStats();
   playAudio(randnum);
+  console.log(`secret_notes = ${secret_notes}`);
 }
 
 function resetAudio() {
@@ -120,20 +121,22 @@ function playAudio(index) {
 }
 
 function checkAnswer(mode, diff) {
+  if (document.querySelector(`.${modeGame}`).style.display === "none") return;
+
   if (mode === "multiple") {
     if (choosen === secret_notes) {
       ac++;
       containerEl.style.backgroundColor = "#bdffbf";
       displayMessage("Congrats! Your answer is correct!");
     } else {
-      containerEl.style.backgroundColor = "#ffcfcf";
+      containerEl.style.backgroundColor = "#ffe3e3";
       displayMessage("Sorry, your answer is wrong! Try better!");
     }
     btnOptionsEl.forEach((btn) => {
-      if (btn.textContent === secret_notes) {
-        btn.style.backgroundColor = "#008022";
-      } else if (choosen === btn.textContent) {
-        btn.style.backgroundColor = "#d41717";
+      if (btn.dataset.note === secret_notes) {
+        btn.style.backgroundColor = "#80fe62";
+      } else if (choosen === btn.dataset.note) {
+        btn.style.backgroundColor = "#fd6b6b";
       }
     });
   } else {
@@ -154,6 +157,7 @@ function checkAnswer(mode, diff) {
         displayMessage("Sorry, your answer is wrong! Try better!");
       }
       inputNotesEl.disabled = true;
+      btnChckEl.disabled = true;
     }
   }
 
@@ -165,6 +169,10 @@ function checkAnswer(mode, diff) {
 
   playAudio(randnum);
   updateStats();
+
+  setTimeout(function () {
+    playGame(modeGame, diffGame);
+  }, 2000);
 }
 
 function displayMessage(message) {
@@ -200,7 +208,10 @@ hideNotesEl.forEach((note) => {
 // menu game
 btnStartEl.addEventListener("click", () => {
   menuStartEl.style.display = "none";
+  containerEl.style.display = "block";
   menuModeEl.style.display = "flex";
+  displayMessage("Which game mode would you like to play?");
+  containerEl.style.backgroundColor = "#DDD";
 });
 
 let modeGame;
@@ -227,9 +238,13 @@ btnDiffEl.forEach((btn) => {
   });
 });
 
-btnPlayEl.forEach((play) => {
-  play.addEventListener("click", () => {
-    playGame(modeGame, diffGame);
+btnBackEl.forEach((back) => {
+  back.addEventListener("click", () => {
+    resetAudio();
+    [ac, attempt, alr_check, curraudio] = [0, 0, false, null];
+    document.querySelector(`.${modeGame}`).style.display = "none";
+    containerEl.style.display = "none";
+    menuStartEl.style.display = "flex";
   });
 });
 
@@ -240,7 +255,8 @@ btnChckEl.addEventListener("click", () => {
 btnOptionsEl.forEach((opt) => {
   opt.addEventListener("click", (e) => {
     if (!alr_check) {
-      choosen = e.target.textContent;
+      choosen = e.target.dataset.note;
+      console.log(choosen);
       checkAnswer(modeGame, diffGame);
       alr_check = true;
     }

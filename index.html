@@ -4,61 +4,119 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,1,0"
+    />
     <title>Pitch Perfect Training</title>
+    <script
+      src="https://kit.fontawesome.com/cc425edf74.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    <div class="container">
-      <section class="menu menu_start">
-        <h3>Welcome to Pitch Perfect Training!</h3>
-        <p class="message">Wanna start the game?</p>
-        <button type="button" class="btn btn_start">YES</button>
-      </section>
+    <section class="menu menu_start">
+      <h4>Welcome to</h4>
+      <h1>Pitch Perfect</h1>
+      <h1 class="light">Training!</h1>
+      <h5>Wanna start the game?</h5>
+      <button type="button" class="btn_start">YES</button>
+    </section>
+    <div class="container hidden">
       <section class="menu menu_mode hidden">
         <p class="message">Which game mode would you like to play?</p>
-        <button type="button" class="btn btn_mode" data-mode="multiple">
+        <button type="button" class="btn btn_mode grad1" data-mode="multiple">
           Multiple
         </button>
-        <button type="button" class="btn btn_mode" data-mode="essay">
+        <button type="button" class="btn btn_mode grad2" data-mode="essay">
           Essay
         </button>
       </section>
       <section class="menu menu_diff hidden">
         <p class="message">Which game mode would you like to play?</p>
         <p class="ket hidden">(You don't need to guess the octave)</p>
-        <button type="button" class="btn btn_diff" data-diff="easy">
+        <button type="button" class="btn btn_diff grad1" data-diff="easy">
           Easy
         </button>
-        <button type="button" class="btn btn_diff" data-diff="hard">
+        <button type="button" class="btn btn_diff grad2" data-diff="hard">
           Hard
         </button>
         <p class="ket hidden">(You have to guess the octave)</p>
       </section>
       <section class="gameSection multiple hidden">
         <div class="container_wrapper">
-          <button type="button" class="btn btn_again">Play Again</button>
+          <button type="button" class="btn btn_back grad1">Back to menu</button>
           <p class="range">Between A0 to C8</p>
         </div>
         <h2>Guess the notes</h2>
-        <p class="hide_notes">?</p>
-        <p class="message">Start Guessing........</p>
-        <div class="notes_data answer">
-          <button type="button" class="btn option" data-note="A">A</button>
-          <button type="button" class="btn option" data-note="B">B</button>
-          <button type="button" class="btn option" data-note="C">C</button>
-          <button type="button" class="btn option" data-note="D">D</button>
+        <div class="hide_notes">
+          <i class="fa-solid fa-circle-play"></i>
         </div>
+        <p class="message">Start Guessing........</p>
         <div class="content">
           <p>Correct: <span class="correct">0</span></p>
           <p>Attempt: <span class="attempt">0</span></p>
         </div>
+        <div class="piano">
+          <div class="notes_data answer">
+            <div class="mayor">
+              <button
+                type="button"
+                class="opsi option mayor1"
+                data-note="C"
+              ></button>
+              <button
+                type="button"
+                class="opsi option mayor2"
+                data-note="D"
+              ></button>
+              <button
+                type="button"
+                class="opsi option mayor3"
+                data-note="E"
+              ></button>
+              <button
+                type="button"
+                class="opsi option mayor4"
+                data-note="F"
+              ></button>
+              <button
+                type="button"
+                class="opsi option mayor5"
+                data-note="G"
+              ></button>
+              <button
+                type="button"
+                class="opsi option mayor6"
+                data-note="A"
+              ></button>
+              <button
+                type="button"
+                class="opsi option mayor7"
+                data-note="B"
+              ></button>
+            </div>
+            <div class="minor1">
+              <button type="button" class="opsi opt" data-note="C#"></button>
+              <button type="button" class="opsi opt" data-note="D#"></button>
+            </div>
+            <div class="minor2">
+              <button type="button" class="opsi opt" data-note="F#"></button>
+              <button type="button" class="opsi opt" data-note="G#"></button>
+              <button type="button" class="opsi opt" data-note="A#"></button>
+            </div>
+          </div>
+        </div>
       </section>
       <section class="gameSection essay hidden">
         <div class="container_wrapper">
-          <button type="button" class="btn btn_again">Play Again</button>
+          <button type="button" class="btn btn_back grad1">Back to menu</button>
           <p class="range">Between A0 to C8</p>
         </div>
         <h2>Guess the notes</h2>
-        <p class="hide_notes">?</p>
+        <div class="hide_notes">
+          <i class="fa-solid fa-circle-play"></i>
+        </div>
         <p class="message">Start Guessing........</p>
         <div class="notes_data">
           <form>
@@ -67,7 +125,9 @@
               placeholder="Enter Your Guessing Notes!"
               class="input_notes"
             />
-            <button type="button" class="btn btn_check">Check Now!</button>
+            <button type="button" class="btn btn_check grad2">
+              Check Now!
+            </button>
           </form>
           <div class="content">
             <p>Correct: <span class="correct">0</span></p>
